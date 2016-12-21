@@ -3,17 +3,14 @@ package cn.wisesign.xamng.po;
 
 import java.util.Date;
 
-import org.nutz.dao.entity.annotation.Column;
-import org.nutz.dao.entity.annotation.Id;
-import org.nutz.dao.entity.annotation.Name;
-import org.nutz.dao.entity.annotation.Table;
+import org.nutz.dao.entity.annotation.*;
 
 @Table("xamng_case")
 public class Case {
 	@Id private int id;
 	@Name @Column private String name;
 	@Column("belongProject") private String belongProject;
-	@Column("script") private String script;
+	@Column("script") @ColDefine(customType="LONGTEXT", type=ColType.VARCHAR) private String script;
 	@Column("createdate") private Date createdate;
 	@Column("author") private String author;
 	public int getId() {

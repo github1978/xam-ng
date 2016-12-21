@@ -11,7 +11,7 @@ import org.nutz.mvc.Mvcs
 
 open class BaseModule(@Inject var dao: Dao = Mvcs.ctx().defaultIoc.get(Dao::class.java)) {
 
-    protected fun query(klass:Class<Any>,  cnd:Condition,  pager:Pager?, regex:String ):QueryResult {
+    protected fun query(klass:Class<Any>,  cnd:Condition?,  pager:Pager?, regex:String ):QueryResult {
         if (pager?.pageNumber?.compareTo(1) == -1) {
             pager?.pageNumber = 1
         }
