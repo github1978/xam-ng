@@ -12,7 +12,7 @@ import org.openqa.grid.web.Hub
 class MainSetup():Setup {
 
     companion object{
-        var selenium_server:Hub = Hub(null)
+        var selenium_server:Hub = Hub(GridHubConfiguration())
         fun booSeleniumServer(){
             var selenium_server_config = GridHubConfiguration()
             selenium_server_config.port=7474

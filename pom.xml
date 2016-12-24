@@ -65,7 +65,7 @@
 		<finalName>xam-ng</finalName>
 		<resources>
 			<resource>
-				<directory>${project.basedir}/conf</directory>
+				<directory>${project.basedir}/resources</directory>
 			</resource>
 		</resources>
 		<plugins>

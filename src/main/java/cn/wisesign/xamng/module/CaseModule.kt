@@ -8,7 +8,6 @@ import org.nutz.mvc.annotation.At
 import org.nutz.mvc.annotation.Fail
 import org.nutz.mvc.annotation.Ok
 import cn.wisesign.xamng.po.Case
-import com.sun.xml.internal.bind.v2.schemagen.episode.Klass
 import org.nutz.dao.QueryResult
 
 @IocBean
