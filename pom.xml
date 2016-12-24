@@ -10,13 +10,20 @@
 
 	<properties>
 		<kotlin.version>1.0.5</kotlin.version>
+		<selenium.version>3.0.1</selenium.version>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
-			<scope>test</scope>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>${selenium.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-server</artifactId>
+			<version>${selenium.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.nutz</groupId>
@@ -114,7 +121,7 @@
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.3.0.v20150612</version>
+				<version>9.4.0.v20161208</version>
 				<configuration>
 					<stopPort>9966</stopPort>
 					<stopKey>foo</stopKey>

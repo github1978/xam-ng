@@ -1,5 +1,6 @@
 package cn.wisesign.xamng.module
 
+import cn.wisesign.xamng.MainSetup
 import cn.wisesign.xamng.excuteGroovyCase
 import org.nutz.ioc.loader.annotation.IocBean
 import org.nutz.lang.util.NutMap
@@ -28,7 +29,7 @@ class CaseModule : BaseModule() {
             }
         }catch (e:Exception){
             e.printStackTrace()
-            return ajaxFail("query case is failed!system error!")
+            return ajaxFail(e.message)
         }
     }
 
@@ -43,6 +44,16 @@ class CaseModule : BaseModule() {
     @At fun excute():NutMap{
         return ajaxOk(NutMap().setv("result",excuteGroovyCase("TestNGGroovy")))
 //        return ajaxOk(NutMap().setv("result",Excutor.run("TestNGGroovy")))
+    }
+
+    @At fun stopTestServer():NutMap{
+        MainSetup.Companion.selenium_server.stop()
+        return ajaxOk(NutMap())
+    }
+
+    @At fun startTestServer():NutMap{
+        MainSetup.Companion.booSeleniumServer()
+        return ajaxOk(NutMap())
     }
 
 }
