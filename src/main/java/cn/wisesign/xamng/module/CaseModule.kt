@@ -1,6 +1,6 @@
 package cn.wisesign.xamng.module
 
-import cn.wisesign.xamng.MainSetup
+import cn.wisesign.xamng.SeleniumHub
 import cn.wisesign.xamng.excuteGroovyCase
 import org.nutz.ioc.loader.annotation.IocBean
 import org.nutz.lang.util.NutMap
@@ -9,7 +9,10 @@ import org.nutz.mvc.annotation.Fail
 import org.nutz.mvc.annotation.Ok
 import cn.wisesign.xamng.po.Case
 import org.nutz.dao.QueryResult
+import org.nutz.json.Json
+import org.nutz.json.JsonFormat
 
+@Suppress("unused")
 @IocBean
 @At("/case")
 @Ok("json")
@@ -46,13 +49,18 @@ class CaseModule : BaseModule() {
     }
 
     @At fun stopTestServer():NutMap{
-        MainSetup.Companion.selenium_server.stop()
+        SeleniumHub.stop()
         return ajaxOk(NutMap())
     }
 
     @At fun startTestServer():NutMap{
-        MainSetup.Companion.booSeleniumServer()
+        SeleniumHub.start()
         return ajaxOk(NutMap())
+    }
+
+    @At fun printNodes():NutMap{
+        var seleniumNodes = SeleniumHub.getSeleniumNodes()
+        return ajaxOk(Json.toJson(seleniumNodes,JsonFormat.compact()))
     }
 
 }
