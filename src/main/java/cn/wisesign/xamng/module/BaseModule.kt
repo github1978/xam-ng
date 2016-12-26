@@ -7,8 +7,6 @@ import org.nutz.dao.pager.Pager
 import org.nutz.ioc.loader.annotation.Inject
 import org.nutz.lang.util.NutMap
 import org.nutz.mvc.Mvcs
-import org.omg.CORBA.Object
-import kotlin.reflect.KClass
 
 
 open class BaseModule(@Inject var dao: Dao = Mvcs.ctx().defaultIoc.get(Dao::class.java)) {
@@ -23,11 +21,7 @@ open class BaseModule(@Inject var dao: Dao = Mvcs.ctx().defaultIoc.get(Dao::clas
         return QueryResult(roles, pager)
     }
 
-    protected fun ajaxOk(data: NutMap):NutMap  {
-        return NutMap().setv("ok", true).setv("data", data)
-    }
-
-    protected fun ajaxOk(data: String):NutMap {
+    protected fun ajaxOk(data: Any?):NutMap {
         return NutMap().setv("ok", true).setv("msg",data)
     }
 

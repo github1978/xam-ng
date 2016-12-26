@@ -9,8 +9,6 @@ import org.nutz.mvc.annotation.Fail
 import org.nutz.mvc.annotation.Ok
 import cn.wisesign.xamng.po.Case
 import org.nutz.dao.QueryResult
-import org.nutz.json.Json
-import org.nutz.json.JsonFormat
 
 @Suppress("unused")
 @IocBean
@@ -60,7 +58,7 @@ class CaseModule : BaseModule() {
 
     @At fun printNodes():NutMap{
         var seleniumNodes = SeleniumHub.getSeleniumNodes()
-        return ajaxOk(Json.toJson(seleniumNodes,JsonFormat.compact()))
+        return ajaxOk(seleniumNodes)
     }
 
 }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="/xamng/html/js/angular.js"></script>
+</head>
+<body>
+
+<div data-ng-app="testApp" data-ng-controller="testAppController" data-ng-init="loadData()">
+    <ul data-ng-repeat="node in nodes">
+        <li>nodeid: {{ node.id }} | nodehost: {{ node.host }} | nodeversion: {{ node.version }}</li>
+    </ul>
+</div>
+
+</body>
+<script>
+    var testApp = angular.module('testApp', []);
+    testApp.controller("testAppController",function($q,$http,$scope){
+        $scope.loadData = function(){
+            var promise = $http({
+                method:"get",
+                url:"/xamng/case/printNodes",
+                cache: true
+            }).then(function(response){
+               $scope.nodes = response.data.msg;
+            })
+        }
+    });
+</script>
+</html>
