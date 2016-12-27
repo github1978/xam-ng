@@ -58,7 +58,7 @@ class SeleniumHub {
         }
 
         fun getServerContext(): String {
-            return "http://" + server_config.host + ":" + server_config.port
+            return "http://127.0.0.1:" + server_config.port
         }
     }
 }
