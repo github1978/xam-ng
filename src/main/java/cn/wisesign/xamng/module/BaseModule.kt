@@ -22,7 +22,7 @@ open class BaseModule(@Inject var dao: Dao = Mvcs.ctx().defaultIoc.get(Dao::clas
     }
 
     protected fun ajaxOk(data: Any?):NutMap {
-        return NutMap().setv("ok", true).setv("msg",data)
+        return NutMap().setv("ok", true).setv("data",data)
     }
 
     protected fun ajaxFail(msg:String?):NutMap {
