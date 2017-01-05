@@ -138,6 +138,7 @@
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 					<webApp>
 						<contextPath>/xamng</contextPath>
+						<defaultsDescriptor>src/main/webapp/WEB-INF/webdefault.xml</defaultsDescriptor>
 					</webApp>
 				</configuration>
 			</plugin>

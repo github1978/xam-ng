@@ -3,51 +3,19 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="/xamng/html/semantic-ui/semantic.css">
-    <!--<script src="/xamng/html/js/angular.js"></script>-->
-
 </head>
 <body>
 
-<!--<div data-ng-app="testApp" data-ng-controller="testAppController" data-ng-init="loadData()">-->
-    <!--<ul data-ng-repeat="node in nodes">-->
-        <!--<li>nodeid: {{ node.id }} | nodehost: {{ node.host }} | nodeversion: {{ node.version }}</li>-->
-    <!--</ul>-->
+<div class="ui sub header">选择测试主机</div>
+<div class="ui fluid multiple search normal selection dropdown slave">
+    <input type="hidden" name="slave">
+    <i class="dropdown icon"></i>
+    <div class="default text">Select Slave</div>
+    <div class="menu"></div>
+</div>
 
-<!--</div>-->
-
-<select multiple="" name="skills" class="ui fluid normal dropdown slaves">
-</select>
 </body>
-<!--<script>-->
-    <!--var testApp = angular.module('testApp',[]);-->
-    <!--testApp.controller("testAppController",function($q,$http,$scope){-->
-        <!--$scope.loadData = function(){-->
-            <!--var promise = $http({-->
-                <!--method:"get",-->
-                <!--url:"/xamng/case/printNodes",-->
-                <!--cache: true-->
-            <!--}).then(function(response){-->
-               <!--$scope.nodes = response.data.msg;-->
-            <!--})-->
-        <!--}-->
-    <!--});-->
-<!--</script>-->
 <script src="/xamng/html/js/jquery.js"></script>
 <script src="/xamng/html/semantic-ui/semantic.js"></script>
-<script>
-$(document).ready(function(){
-    $.fn.api.settings.api = {
-      'get slaves'    : '/xamng/case/printNodes',
-      'create user'   : '/create',
-      'add user'      : '/add/{id}',
-      'follow user'   : '/follow/{id}',
-      'search'        : '/search/?query={value}'
-    };
-
-    $('.ui.fluid.normal.dropdown.slaves').dropdown({
-        apiSettings:true
-    });
-});
-</script>
-
+<script src="/xamng/html/js/all.js"></script>
 </html>

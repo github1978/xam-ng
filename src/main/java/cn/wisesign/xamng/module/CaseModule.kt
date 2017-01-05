@@ -56,7 +56,7 @@ class CaseModule : BaseModule() {
         return ajaxOk(NutMap())
     }
 
-    @At fun printNodes():NutMap{
+    @At fun getSlaves():NutMap{
         var seleniumNodes = SeleniumHub.getSeleniumNodes()
         return ajaxOk(seleniumNodes)
     }
