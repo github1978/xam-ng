@@ -3,15 +3,53 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="/xamng/html/semantic-ui/semantic.css">
+    <link rel="stylesheet" type="text/css" href="/xamng/html/css/all.css">
 </head>
 <body>
 
-<div class="ui sub header">选择测试主机</div>
-<div class="ui fluid multiple search normal selection dropdown slave">
-    <input type="hidden" name="slave">
-    <i class="dropdown icon"></i>
-    <div class="default text">Select Slave</div>
-    <div class="menu"></div>
+<div class="ui divided grid uiCase">
+    <!-- 设置 -->
+    <div class="four wide column settings" style="position: relative">
+        <div class="ui fluid multiple search normal selection dropdown slave">
+            <input type="hidden" name="slave">
+            <i class="dropdown icon"></i>
+            <div class="default text">Select Slave</div>
+            <div class="menu"></div>
+        </div>
+    </div>
+
+    <!-- 案例设计 -->
+    <div class="twelve wide column design" style="position: relative">
+        <div class="uiCaseBody">
+            <div class="ui top attached pointing menu">
+                <button class="active item ui button" data-tab="easy">简化视图</button>
+                <button class="item ui button" data-tab="expert">专家视图</button>
+            </div>
+            <div class="ui bottom attached active tab segment" data-tab="easy">
+                <div class="ui styled fluid accordion uiCaseStep">
+
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        <a class="stepName">打开测试地址</a>
+                        <button class="ui mini button"><i class="exchange icon"></i></button>
+                    </div>
+                    <div class="content stepContent">
+                        <p class="transition hidden">浏览器</p>
+                    </div>
+
+                    <div class="title">
+                        <i class="dropdown icon"></i>
+                        <a class="stepName">打开测试地址</a></div>
+                    <div class="content">
+                        <p class="transition hidden">浏览器</p></div>
+
+                </div>
+            </div>
+            <div class="ui bottom attached tab segment" data-tab="expert">
+                专家视图
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

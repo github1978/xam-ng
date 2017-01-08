@@ -16,4 +16,16 @@ $(document).ready(function(){
             action:'get slaves'
         },
     });
+
+    $('.menu .item')
+      .tab()
+    ;
+
+    $('.uiCaseStep')
+      .accordion({
+        selector: {
+          trigger: '.stepName'
+        }
+      })
+    ;
 });

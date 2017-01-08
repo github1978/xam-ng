@@ -1,0 +1,16 @@
+.ui.grid.uiCase {
+    padding:2%
+}
+
+.settings {
+    height:1000px
+}
+
+.uiCaseStep .stepContent {
+    border-top:1px solid black
+}
+
+.uiCaseStep .title button {
+    margin-top:-0.5em;
+    float:right
+}
