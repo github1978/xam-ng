@@ -2,6 +2,10 @@
     padding:2%
 }
 
+.operation {
+    text-align:center
+}
+
 .settings {
     height:1000px
 }

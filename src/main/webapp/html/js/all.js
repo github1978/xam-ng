@@ -17,6 +17,13 @@ $(document).ready(function(){
         },
     });
 
+    $('.excute').click(function(e){
+        $(this).addClass('loading');
+    }).api({
+        url:'/xamng/case/excute'
+    })
+    ;
+
     $('.menu .item')
       .tab()
     ;
