@@ -45,11 +45,11 @@ class SeleniumHub {
         }
 
         fun getSeleniumNodes(): List<SeleniumNode>? {
-            var resultlist: MutableList<SeleniumNode> = ArrayList()
-            var doc = Jsoup.parse(URL(getServerContext() + "/grid/console"), 50000)
-            var seNodes = doc.select("div.proxy")
+            val resultlist: MutableList<SeleniumNode> = ArrayList()
+            val doc = Jsoup.parse(URL(getServerContext() + "/grid/console"), 50000)
+            val seNodes = doc.select("div.proxy")
             for (seNode in seNodes) {
-                var seleniumNode = SeleniumNode()
+                val seleniumNode = SeleniumNode()
                 seleniumNode.id = seNode.select("div[type=config]")[0].getElementsMatchingText("^id:").text().split("id:")[1].trim()
                 seleniumNode.host = seNode.select("div[type=config]")[0].getElementsMatchingText("^host:")[0].text().split("host:")[1].trim()
                 seleniumNode.version = seNode.select("p.proxyname").text().trim()
