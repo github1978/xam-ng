@@ -9,11 +9,9 @@ import java.io.InputStream
 class VelocityLoader : ResourceLoader(){
 
     override fun init(p0: ExtendedProperties?) {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getResourceStream(source: String?): InputStream {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
         return VelocityLoader::class.java.getResourceAsStream(source)
     }
 
