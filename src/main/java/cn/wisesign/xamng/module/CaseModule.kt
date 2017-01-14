@@ -7,7 +7,7 @@ import org.nutz.lang.util.NutMap
 import org.nutz.mvc.annotation.At
 import org.nutz.mvc.annotation.Fail
 import org.nutz.mvc.annotation.Ok
-import cn.wisesign.xamng.po.Case
+import cn.wisesign.xamng.po.UiCase
 import org.nutz.dao.QueryResult
 
 @Suppress("unused")
@@ -19,11 +19,11 @@ class CaseModule : BaseModule() {
     
     @At fun query():NutMap {
         try {
-            val cases:QueryResult = queryAny(Case().javaClass,null,null,"")
+            val cases:QueryResult = queryAny(UiCase().javaClass,null,null,"")
             when(cases.list.size){
                 0 -> return ajaxOk("no data")
                 else -> {
-                    val case = cases.list[0] as Case
+                    val case = cases.list[0] as UiCase
                     return ajaxOk(NutMap().setv("caseScript", case.script))
                 }
             }
@@ -56,7 +56,7 @@ class CaseModule : BaseModule() {
         return ajaxOk(NutMap())
     }
 
-    @At fun printNodes():NutMap{
+    @At fun getSlaves():NutMap{
         var seleniumNodes = SeleniumHub.getSeleniumNodes()
         return ajaxOk(seleniumNodes)
     }

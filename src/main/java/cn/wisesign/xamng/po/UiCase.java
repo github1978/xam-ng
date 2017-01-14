@@ -6,7 +6,7 @@ import java.util.Date;
 import org.nutz.dao.entity.annotation.*;
 
 @Table("xamng_case")
-public class Case {
+public class UiCase {
 	@Id private int id;
 	@Name @Column private String name;
 	@Column("belongProject") private String belongProject;

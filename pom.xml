@@ -65,6 +65,11 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.6.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>xam-ng</finalName>
@@ -133,6 +138,7 @@
 					<scanIntervalSeconds>10</scanIntervalSeconds>
 					<webApp>
 						<contextPath>/xamng</contextPath>
+						<defaultsDescriptor>src/main/webapp/WEB-INF/webdefault.xml</defaultsDescriptor>
 					</webApp>
 				</configuration>
 			</plugin>
