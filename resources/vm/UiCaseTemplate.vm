@@ -1,0 +1,33 @@
+package cn.wisesign.xamng
+
+import org.openqa.selenium.By
+import org.openqa.selenium.remote.RemoteWebDriver
+import org.testng.annotations.AfterClass
+import org.testng.annotations.BeforeClass
+import org.testng.annotations.Test
+import org.openqa.selenium.remote.DesiredCapabilities
+
+class ${CaseName}{
+
+    RemoteWebDriver driver
+
+    @BeforeClass
+    setUp(){
+        print("ok")
+        dc = DesiredCapabilities.internetExplorer()
+        driver = new RemoteWebDriver(new URL("http://192.168.234.1:5555"),dc)
+        driver.get("http://baidu.com")
+    }
+
+    @Test
+    void create(){
+        ${steps}
+        driver.findElement(By.id("kw")).sendKeys("hehe")
+    }
+
+    @AfterClass
+    tearDown(){
+
+    }
+
+}
