@@ -7,24 +7,31 @@ import groovy.lang.GroovyClassLoader
 import org.jsoup.Jsoup
 import org.openqa.grid.internal.utils.configuration.GridHubConfiguration
 import org.openqa.grid.web.Hub
-import java.io.File
 import java.net.URL
 import java.util.*
+import org.apache.velocity.VelocityContext
+import java.io.StringWriter
 
-fun excuteGroovyCase(caseName: String) {
-    val groovyLoader = GroovyClassLoader(Thread.currentThread().contextClassLoader)
-    val groovyNgClass = groovyLoader.parseClass(File("D:\\GitHub\\xam-ng\\src\\test\\groovy\\$caseName.groovy"))
+
+fun excuteGroovyCase(sourceCase: CaseDetail) {
+    val groovyClass = parseClass(sourceCase)
     val tng = TestNG()
     tng.setUseDefaultListeners(false)
-    tng.setTestClasses(arrayOf(groovyNgClass.newInstance().javaClass))
+    tng.setTestClasses(arrayOf(groovyClass.newInstance().javaClass))
     tng.run()
 }
 
-fun converToGroovy(sourceCase: CaseDetail): String {
-
-    return ""
+fun parseClass(sourceCase: CaseDetail): Class<Any> {
+    val ve = getVelocityEngine()
+    val template = ve.getTemplate("/vm/UiCaseTemplate.vm")
+    val ctx = VelocityContext()
+    val strwriter = StringWriter()
+    ctx.put("CaseName",sourceCase.caseName)
+    ctx.put("steps","print \"hehe!\"")
+    template.merge(ctx,strwriter)
+    val groovyLoader = GroovyClassLoader(Thread.currentThread().contextClassLoader)
+    return groovyLoader.parseClass(strwriter.toString())
 }
-
 
 class SeleniumHub {
     companion object {

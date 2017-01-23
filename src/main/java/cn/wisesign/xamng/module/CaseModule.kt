@@ -1,6 +1,7 @@
 package cn.wisesign.xamng.module
 
 import cn.wisesign.xamng.SeleniumHub
+import cn.wisesign.xamng.dto.CaseDetail
 import cn.wisesign.xamng.excuteGroovyCase
 import org.nutz.ioc.loader.annotation.IocBean
 import org.nutz.lang.util.NutMap
@@ -42,7 +43,9 @@ class CaseModule : BaseModule() {
     }
 
     @At fun excute():NutMap{
-        return ajaxOk(NutMap().setv("result",excuteGroovyCase("TestNGGroovy")))
+        val uicase = CaseDetail(1,"hehe",1,"", listOf())
+        excuteGroovyCase(uicase)
+        return ajaxOk("a")
 //        return ajaxOk(NutMap().setv("result",Excutor.run("TestNGGroovy")))
     }
 
