@@ -13,20 +13,20 @@ class UiCaseTemplate{
 
     @BeforeClass
     setUp(){
-        def dc = DesiredCapabilities.internetExplorer()
+        def dc = DesiredCapabilities.chrome()
         driver = new RemoteWebDriver(new URL("http://192.168.234.1:5555/wd/hub"),dc)
         driver.get("http://baidu.com")
     }
 
     @Test
     void create(){
-        ${steps}
         driver.findElement(By.id("kw")).sendKeys("hehe")
+        Thread.sleep(5000)
     }
 
     @AfterClass
     tearDown(){
-
+        driver.close()
     }
 
 }
