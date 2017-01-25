@@ -5,11 +5,9 @@ import cn.wisesign.xamng.dto.CaseDetail
 import cn.wisesign.xamng.excuteGroovyCase
 import org.nutz.ioc.loader.annotation.IocBean
 import org.nutz.lang.util.NutMap
-import org.nutz.mvc.annotation.At
-import org.nutz.mvc.annotation.Fail
-import org.nutz.mvc.annotation.Ok
 import cn.wisesign.xamng.po.UiCase
 import org.nutz.dao.QueryResult
+import org.nutz.mvc.annotation.*
 
 @Suppress("unused")
 @IocBean
@@ -42,11 +40,14 @@ class CaseModule : BaseModule() {
         return ajaxOk(NutMap())
     }
 
-    @At fun excute():NutMap{
+    @At fun excute(
+            @Param("slave") slave:String,
+            @Param("browser") browser:String
+    ):NutMap
+    {
         val uicase = CaseDetail(1,"hehe",1,"", listOf())
-        excuteGroovyCase(uicase)
+        excuteGroovyCase(uicase,slave,browser)
         return ajaxOk("a")
-//        return ajaxOk(NutMap().setv("result",Excutor.run("TestNGGroovy")))
     }
 
     @At fun stopTestServer():NutMap{

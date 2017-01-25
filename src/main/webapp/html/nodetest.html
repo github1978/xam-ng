@@ -16,11 +16,21 @@
 
     <!-- 设置 -->
     <div class="four wide column settings" style="position: relative">
-        <div class="ui fluid multiple search normal selection dropdown slave">
+        <div class="ui fluid search normal selection dropdown slave" id="slave">
             <input type="hidden" name="slave">
             <i class="dropdown icon"></i>
             <div class="default text">Select Slave</div>
             <div class="menu"></div>
+        </div>
+        <div class="ui fluid search normal selection dropdown browser" id="browser">
+            <input type="hidden" name="browser">
+            <i class="dropdown icon"></i>
+            <div class="default text">Select Browser</div>
+            <div class="menu">
+                <div class="item" data-value="ie" data-text="ie">ie</div>
+                <div class="item" data-value="chrome" data-text="chrome">chrome</div>
+                <div class="item" data-value="firefox" data-text="firefox">firefox</div>
+            </div>
         </div>
     </div>
 

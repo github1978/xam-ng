@@ -13,21 +13,28 @@ import org.apache.velocity.VelocityContext
 import java.io.StringWriter
 
 
-fun excuteGroovyCase(sourceCase: CaseDetail) {
-    val groovyClass = parseClass(sourceCase)
+fun excuteGroovyCase(sourceCase: CaseDetail,slave:String,browser:String) {
+    val groovyClass = parseClass(sourceCase,slave,browser)
     val tng = TestNG()
     tng.setUseDefaultListeners(false)
     tng.setTestClasses(arrayOf(groovyClass.newInstance().javaClass))
     tng.run()
 }
 
-fun parseClass(sourceCase: CaseDetail): Class<Any> {
+fun parseClass(sourceCase: CaseDetail,slave:String,browser:String): Class<Any> {
     val ve = getVelocityEngine()
     val template = ve.getTemplate("/vm/UiCaseTemplate.vm")
     val ctx = VelocityContext()
     val strwriter = StringWriter()
+    val stepslist = listOf(
+            "driver.get(\"http://www.baidu.com\")",
+            "driver.findElement(By.id(\"kw\")).sendKeys(\"hehe\")",
+            "Thread.sleep(5000)"
+    )
     ctx.put("CaseName",sourceCase.caseName)
-    ctx.put("steps","print \"hehe!\"")
+    ctx.put("steps",stepslist.decodeForSteps())
+    ctx.put("browser",browser)
+    ctx.put("slave","$slave/wd/hub")
     template.merge(ctx,strwriter)
     val groovyLoader = GroovyClassLoader(Thread.currentThread().contextClassLoader)
     return groovyLoader.parseClass(strwriter.toString())

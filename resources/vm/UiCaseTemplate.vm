@@ -13,21 +13,21 @@ class ${CaseName}{
 
     @BeforeClass
     setUp(){
-        print("ok")
-        dc = DesiredCapabilities.internetExplorer()
-        driver = new RemoteWebDriver(new URL("http://192.168.234.1:5555"),dc)
-        driver.get("http://baidu.com")
+        def dc = DesiredCapabilities.${browser}()
+        driver = new RemoteWebDriver(new URL("${slave}"),dc)
     }
 
     @Test
     void create(){
         ${steps}
-        driver.findElement(By.id("kw")).sendKeys("hehe")
     }
 
     @AfterClass
     tearDown(){
-
+        if(driver != null){
+            driver.close()
+            driver.quit()
+        }
     }
 
 }

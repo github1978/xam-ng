@@ -40,3 +40,11 @@ fun getVelocityEngine(): VelocityEngine {
     ve.init(p)
     return ve
 }
+
+fun List<String>.decodeForSteps():String{
+    var tmp = ""
+    for (str in this){
+        tmp += str + "\r\n"
+    }
+    return tmp
+}

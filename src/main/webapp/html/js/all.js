@@ -3,8 +3,7 @@ $(document).ready(function(){
       'get slaves' : '/xamng/case/getSlaves',
     };
 
-    var dropdown = $('.ui.fluid.multiple.search.normal.selection.dropdown.slave')
-    .dropdown({
+    $('#slave').dropdown({
         useLabels: true,
         allowAdditions: true,
         fields:{
@@ -17,10 +16,21 @@ $(document).ready(function(){
         },
     });
 
+    $('#browser').dropdown({
+        useLabels: true,
+        allowAdditions: true
+    });
+
     $('.excute').click(function(e){
         $(this).addClass('loading');
     }).api({
-        url:'/xamng/case/excute'
+        url:'/xamng/case/excute',
+        method:'post',
+        beforeSend:function(settings){
+            settings.data.slave = $('#slave').dropdown('get value');
+            settings.data.browser =  $('#browser').dropdown('get value');
+            return settings;
+        }
     })
     ;
 
