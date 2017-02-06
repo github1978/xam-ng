@@ -1,4 +1,4 @@
-package cn.wisesign.xamng.po;
+package cn.wisesign.xamng.pojo;
 
 import org.nutz.dao.entity.annotation.Column;
 import org.nutz.dao.entity.annotation.Id;

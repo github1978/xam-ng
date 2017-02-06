@@ -5,7 +5,7 @@ import cn.wisesign.xamng.dto.CaseDetail
 import cn.wisesign.xamng.excuteGroovyCase
 import org.nutz.ioc.loader.annotation.IocBean
 import org.nutz.lang.util.NutMap
-import cn.wisesign.xamng.po.UiCase
+import cn.wisesign.xamng.pojo.UiCase
 import org.nutz.dao.QueryResult
 import org.nutz.mvc.annotation.*
 
@@ -37,6 +37,14 @@ class CaseModule : BaseModule() {
     }
 
     @At fun delete():NutMap{
+        return ajaxOk(NutMap())
+    }
+
+    @At fun saveObject(@Param("productId") productId:String):NutMap{
+        return ajaxOk(NutMap())
+    }
+
+    @At fun queryObject(@Param("productId") productId:String):NutMap{
         return ajaxOk(NutMap())
     }
 

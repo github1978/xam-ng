@@ -1,24 +1,36 @@
 $(document).ready(function(){
+
+    var dropdowns = [
+        {id:'#slave',option:{
+            useLabels: true,
+            allowAdditions: true,
+            fields:{
+                name:'host',
+                value:'id',
+                text:'host'
+            },
+            apiSettings:{
+                action:'get slaves'
+            },
+        }},
+        {id:'#browser',option:{
+            useLabels: true,
+            allowAdditions: true
+        }},
+        {id:'operates',option:''
+        },
+    ];
+
     $.fn.api.settings.api = {
       'get slaves' : '/xamng/case/getSlaves',
     };
 
-    $('#slave').dropdown({
-        useLabels: true,
-        allowAdditions: true,
-        fields:{
-            name:'host',
-            value:'id',
-            text:'host'
-        },
-        apiSettings:{
-            action:'get slaves'
-        },
-    });
-
-    $('#browser').dropdown({
-        useLabels: true,
-        allowAdditions: true
+    $.each(dropdowns,function(i,v){
+      if(v.option==''){
+        $(v.id).dropdown();
+      }else{
+        $(v.id).dropdown(v.option);
+      }
     });
 
     $('.excute').click(function(e){

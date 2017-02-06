@@ -1,6 +1,6 @@
 package cn.wisesign.xamng.dto
 
-import cn.wisesign.xamng.po.HtmlObject
+import cn.wisesign.xamng.pojo.HtmlObject
 
 data class CaseDetail(
         var caseId:Int = 0,

@@ -12,7 +12,7 @@ import java.util.*
 import org.apache.velocity.VelocityContext
 import java.io.StringWriter
 
-
+// 执行测试案例
 fun excuteGroovyCase(sourceCase: CaseDetail,slave:String,browser:String) {
     val groovyClass = parseClass(sourceCase,slave,browser)
     val tng = TestNG()
@@ -21,6 +21,7 @@ fun excuteGroovyCase(sourceCase: CaseDetail,slave:String,browser:String) {
     tng.run()
 }
 
+// 将测试案例对象转化可执行的groovy脚本类
 fun parseClass(sourceCase: CaseDetail,slave:String,browser:String): Class<Any> {
     val ve = getVelocityEngine()
     val template = ve.getTemplate("/vm/UiCaseTemplate.vm")
