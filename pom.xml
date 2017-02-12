@@ -11,6 +11,7 @@
 	<properties>
 		<kotlin.version>1.0.5</kotlin.version>
 		<selenium.version>3.0.1</selenium.version>
+		<nutz.version>1.r.60</nutz.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -28,12 +29,12 @@
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz</artifactId>
-			<version>1.r.57.r3</version>
+			<version>${nutz.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz-plugins-views</artifactId>
-			<version>1.r.58</version>
+			<version>${nutz.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>

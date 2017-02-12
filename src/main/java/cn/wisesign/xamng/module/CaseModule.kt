@@ -2,11 +2,13 @@ package cn.wisesign.xamng.module
 
 import cn.wisesign.xamng.SeleniumHub
 import cn.wisesign.xamng.dto.CaseDetail
+import cn.wisesign.xamng.dto.CaseStep
 import cn.wisesign.xamng.excuteGroovyCase
 import org.nutz.ioc.loader.annotation.IocBean
 import org.nutz.lang.util.NutMap
 import cn.wisesign.xamng.pojo.UiCase
 import org.nutz.dao.QueryResult
+import org.nutz.mvc.adaptor.JsonAdaptor
 import org.nutz.mvc.annotation.*
 
 @Suppress("unused")
@@ -32,7 +34,14 @@ class CaseModule : BaseModule() {
         }
     }
 
-    @At fun save():NutMap{
+    @At
+    @AdaptBy(type= JsonAdaptor::class)
+    fun save(
+            @Param("caseId") caseId:String,
+            @Param("step") step:CaseStep
+    ):NutMap{
+        print(caseId)
+        print(step)
         return ajaxOk(NutMap())
     }
 

@@ -73,9 +73,9 @@
     <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.seleniumhq.selenium:htmlunit-driver:2.23" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.15" level="project" />
-    <orderEntry type="library" name="Maven: org.nutz:nutz:1.r.57.r3" level="project" />
-    <orderEntry type="library" name="Maven: org.nutz:nutz-plugins-views:1.r.58" level="project" />
-    <orderEntry type="library" name="Maven: org.nutz:nutz-plugins-sfntly:1.r.58" level="project" />
+    <orderEntry type="library" name="Maven: org.nutz:nutz:1.r.60" level="project" />
+    <orderEntry type="library" name="Maven: org.nutz:nutz-plugins-views:1.r.60" level="project" />
+    <orderEntry type="library" name="Maven: org.nutz:nutz-plugins-sfntly:1.r.60" level="project" />
     <orderEntry type="library" name="Maven: com.ibm.icu:icu4j:4.8.1.1" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:druid:1.0.26" level="project" />
     <orderEntry type="module-library">

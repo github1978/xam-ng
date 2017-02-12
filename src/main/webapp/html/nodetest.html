@@ -9,20 +9,33 @@
 
 <div class="ui divided grid uiCase">
 
-    <div class="sixteen wide column operation">
-        <button class="medium ui primary button excute"><i class="play icon"></i>运行</button>
-        <button class="medium ui secondary button cancel"><i class="stop icon"></i>停止</button>
+    <!-- 案例设计 -->
+    <div class="twelve wide column design">
+        <button class="small ui primary button addStep"><i class="play icon"></i>添加步骤</button>
+        <ul class="ui celled selection list" id="steplist">
+            <li class="item step">
+                <div class="header">打开测试地址</div>
+                <div class="content">
+                    <div id="elementUnique" class="ui blue large label">browser</div>
+                    <div id="operateType" class="ui blue large label">go</div>
+                    <div id="elementValue" class="ui blue large label">http://itsmcloud.com</div>
+                    <div class="right floated"><div class="ui small button">删除</div></div>
+                </div>
+            </li>
+        </ul>
     </div>
 
     <!-- 设置 -->
-    <div class="four wide column settings" style="position: relative">
-        <div class="ui fluid search normal selection dropdown slave" id="slave">
+    <div class="four wide column settings">
+        <button class="small ui primary button excute"><i class="play icon"></i>运行</button>
+        <button class="small ui secondary button cancel"><i class="stop icon"></i>停止</button>
+        <div class="ui fluid search small selection dropdown slave" id="slave">
             <input type="hidden" name="slave">
             <i class="dropdown icon"></i>
             <div class="default text">Select Slave</div>
             <div class="menu"></div>
         </div>
-        <div class="ui fluid search normal selection dropdown browser" id="browser">
+        <div class="ui fluid search small selection dropdown browser" id="browser">
             <input type="hidden" name="browser">
             <i class="dropdown icon"></i>
             <div class="default text">Select Browser</div>
@@ -33,55 +46,31 @@
             </div>
         </div>
     </div>
-
-    <!-- 案例设计 -->
-    <div class="twelve wide column design" style="position: relative">
-        <div class="uiCaseBody">
-            <div class="ui top attached pointing menu">
-                <button class="active item ui button" data-tab="easy">简化视图</button>
-                <button class="item ui button" data-tab="expert">专家视图</button>
-            </div>
-            <div class="ui bottom attached active tab segment" data-tab="easy">
-                <div class="ui styled fluid accordion uiCaseStep">
-
-                    <div class="title">
-                        <i class="dropdown icon"></i>
-                        <a class="stepName">打开测试地址</a>
-                        <button class="ui mini button"><i class="exchange icon"></i></button>
-                    </div>
-                    <div class="content stepContent">
-                        <p class="transition hidden">
-                            <div class="ui right labeled input">
-                                <input type="text" placeholder="Find domain">
-                                <div class="ui dropdown label" id="operates">
-                                    <div class="text">点击</div>
-                                    <i class="dropdown icon"></i>
-                                    <div class="menu">
-                                        <div class="item">输入</div>
-                                        <div class="item">点击</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </p>
-                    </div>
-
-                    <div class="title">
-                        <i class="dropdown icon"></i>
-                        <a class="stepName">打开测试地址</a></div>
-                    <div class="content">
-                        <p class="transition hidden">浏览器</p></div>
-
-                </div>
-            </div>
-            <div class="ui bottom attached tab segment" data-tab="expert">
-                专家视图
-            </div>
-        </div>
-    </div>
 </div>
 
+
+
+<div class="ui modal">
+    <form class="ui form segment" id="addStepForm">
+        <div class="field"><input name="stepTitle" type="text" /></div>
+        <div class="three fields">
+            <div class="field">
+                <input name="elementSign" type="text" />
+            </div>
+            <div class="field">
+                <input name="operate" type="text" />
+            </div>
+            <div class="field">
+                <input name="elementValue" type="text" />
+            </div>
+        </div>
+        <div class="ui primary labeled icon button"><i class="checkmark icon"></i>保存</div>
+        <div class="ui black deny button" onclick="$('.ui.form')[0].reset();$('.ui.modal').modal('hide');">取消</div>
+    </form>
+</div>
 </body>
 <script src="/xamng/html/js/jquery.js"></script>
 <script src="/xamng/html/semantic-ui/semantic.js"></script>
+<script src="/xamng/html/js/sortable.js"></script>
 <script src="/xamng/html/js/all.js"></script>
 </html>
