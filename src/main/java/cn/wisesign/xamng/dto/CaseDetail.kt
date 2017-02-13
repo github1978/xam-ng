@@ -1,6 +1,6 @@
 package cn.wisesign.xamng.dto
 
-import cn.wisesign.xamng.po.HtmlObject
+import cn.wisesign.xamng.pojo.HtmlObject
 
 data class CaseDetail(
         var caseId:Int = 0,
@@ -11,8 +11,8 @@ data class CaseDetail(
 )
 
 data class CaseStep(
-        var stepName:String = "",
-        var stepObject: HtmlObject,
-        var stepAction:String = "",
-        var stepExpectContext:String = ""
+        var title:String = "",
+        var element:String="",
+        var action:String = "",
+        var expect:String = ""
 )

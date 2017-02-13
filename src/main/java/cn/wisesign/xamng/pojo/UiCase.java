@@ -1,4 +1,4 @@
-package cn.wisesign.xamng.po;
+package cn.wisesign.xamng.pojo;
 
 
 import java.util.Date;
