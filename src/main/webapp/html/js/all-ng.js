@@ -1,8 +1,15 @@
 angular.module('myApp', []).controller('userCtrl', function($scope,$http) {
     $('.list-group').sortable();
-    $http.get("/xamng/case/getSlaves").then(function (response) {
-        $scope.slaves = response.data.results;
-    });
+
+    $scope.getSlaves = function(){
+        $http.get("/xamng/case/getSlaves").then(
+            function (response) {
+                $scope.slaves = response.data.results;
+                return $scope.slaves;
+            }
+        );
+    }
+    $scope.getSlaves();
 
     $scope.excuteCase = function(){
         $http.post(
