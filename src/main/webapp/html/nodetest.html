@@ -29,22 +29,16 @@
     <div class="four wide column settings">
         <button class="small ui primary button excute"><i class="play icon"></i>运行</button>
         <button class="small ui secondary button cancel"><i class="stop icon"></i>停止</button>
-        <div class="ui fluid search small selection dropdown slave" id="slave">
-            <input type="hidden" name="slave">
-            <i class="dropdown icon"></i>
-            <div class="default text">Select Slave</div>
-            <div class="menu"></div>
-        </div>
-        <div class="ui fluid search small selection dropdown browser" id="browser">
-            <input type="hidden" name="browser">
-            <i class="dropdown icon"></i>
-            <div class="default text">Select Browser</div>
-            <div class="menu">
-                <div class="item" data-value="ie" data-text="ie">ie</div>
-                <div class="item" data-value="chrome" data-text="chrome">chrome</div>
-                <div class="item" data-value="firefox" data-text="firefox">firefox</div>
-            </div>
-        </div>
+        <ul>
+            <li><select class="ui search selection dropdown" id="slave"></select></li>
+            <li>
+                <select class="ui search selection dropdown" id="browser">
+                    <option>ie</option>
+                    <option>chrome</option>
+                    <option>firefox</option>
+                </select>
+            </li>
+        </ul>
     </div>
 </div>
 
@@ -67,6 +61,13 @@
         <div class="ui primary labeled icon button"><i class="checkmark icon"></i>保存</div>
         <div class="ui black deny button" onclick="$('.ui.form')[0].reset();$('.ui.modal').modal('hide');">取消</div>
     </form>
+</div>
+
+<div class="ui segment">
+    <p></p>
+    <div class="ui active dimmer">
+        <div class="ui loader"></div>
+    </div>
 </div>
 </body>
 <script src="/xamng/html/js/jquery.js"></script>
