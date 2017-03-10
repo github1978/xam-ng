@@ -13,8 +13,15 @@ class ${CaseName}{
 
     @BeforeClass
     setUp(){
-        def dc = DesiredCapabilities.${browser}()
-        driver = new RemoteWebDriver(new URL("${slave}"),dc)
+        try{
+            def dc = DesiredCapabilities.${browser}()
+            driver = new RemoteWebDriver(new URL("${slave}"),dc)
+        }catch(Exception e){
+            if(driver != null){
+                driver.close()
+                driver.quit()
+            }
+        }
     }
 
     @Test
