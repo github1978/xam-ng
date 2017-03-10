@@ -1,4 +1,5 @@
-angular.module('myApp', []).controller('userCtrl', function($scope,$http) {
+
+angular.module('myApp', []).controller('caseCtrl', function($scope,$http) {
     $('.list-group').sortable();
 
     $scope.getSlaves = function(){
@@ -8,7 +9,7 @@ angular.module('myApp', []).controller('userCtrl', function($scope,$http) {
                 return $scope.slaves;
             }
         );
-    }
+    };
     $scope.getSlaves();
 
     $scope.excuteCase = function(){
@@ -25,5 +26,9 @@ angular.module('myApp', []).controller('userCtrl', function($scope,$http) {
         ).success(function(data, status, headers, config){
 
         });
+    };
+
+    $scope.addStep = function(){
+        alert(1);
     }
 });

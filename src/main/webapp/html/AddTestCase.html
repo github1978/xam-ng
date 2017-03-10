@@ -5,37 +5,53 @@
     <title>Title</title>
 
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/xamng/html/css/all-ng.css">
+
 </head>
-<body ng-app="myApp" ng-controller="userCtrl">
+<body ng-app="myApp" ng-controller="caseCtrl">
 
-<div class="btn-group" role="group" aria-label="...">
-    <button type="button" class="btn btn-default" ng-click="excuteCase()">运行</button>
-    <button type="button" class="btn btn-default">停止</button>
-    <button type="button" class="btn btn-default">保存</button>
+<div>
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default" ng-click="excuteCase()">运行</button>
+        <button type="button" class="btn btn-default">停止</button>
+        <button type="button" class="btn btn-default">保存用例</button>
+        <button type="button" class="btn btn-default">删除用例</button>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#stepPanel" data-backdrop="static">添加步骤</button>
+    </div>
+    <select class="wiseSelect browserType" ng-model="browser">
+        <option>ie</option>
+        <option>chrome</option>
+        <option>firefox</option>
+    </select>
+    <select class="wiseSelect slave" ng-model="slave">
+        <option data-ng-repeat="slave in slaves" value="{{ slave.id }}">
+            {{ slave }}
+        </option>
+    </select>
+    <button ng-click="getSlaves()">刷新可用节点</button>
+    <div class="list-group" ng-model="stepList">
+        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+    </div>
 </div>
 
-<select class="browserType" ng-model="browser">
-    <option>ie</option>
-    <option>chrome</option>
-    <option>firefox</option>
-</select>
-
-<select class="slave" ng-model="slave">
-    <option data-ng-repeat="slave in slaves" value="{{ slave.id }}">
-        {{ slave }}
-    </option>
-</select>
-
-<div class="list-group">
-    <a href="#" class="list-group-item active">
-        Cras justo odio
-    </a>
-    <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-    <a href="#" class="list-group-item">Morbi leo risus</a>
-    <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-    <a href="#" class="list-group-item">Vestibulum at eros</a>
+<div id="stepPanel" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" />
+                <input type="text" />
+                <input type="text" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="addStep()">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
 </div>
-
 </body>
 <script src="/xamng/html/js/angular.js"></script>
 <script src="/xamng/html/js/jquery.js"></script>
