@@ -6,6 +6,7 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader
 import java.io.InputStream
 import org.apache.velocity.app.VelocityEngine
 import org.apache.velocity.app.Velocity
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -15,16 +16,16 @@ class VelocityLoader : ResourceLoader(){
     override fun init(p0: ExtendedProperties?) {
     }
 
-    override fun getResourceStream(source: String?): InputStream {
+    override fun getResourceStream(source: String?): InputStream? {
         return VelocityLoader::class.java.getResourceAsStream(source)
     }
 
     override fun getLastModified(p0: Resource?): Long {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return 0
     }
 
     override fun isSourceModified(p0: Resource?): Boolean {
-        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return false
     }
 
 }
@@ -47,4 +48,8 @@ fun List<String>.decodeForSteps():String{
         tmp += str + "\r\n"
     }
     return tmp
+}
+
+fun getToDayDate():String{
+    return SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date())
 }
