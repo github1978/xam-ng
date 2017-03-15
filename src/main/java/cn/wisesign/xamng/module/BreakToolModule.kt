@@ -44,27 +44,62 @@ class BreakToolModule :BaseModule() {
         }
         // 2. 处理因迁出导致错帐的收费记录
         // 2.1 查询迁出日期所在的收费记录
-        var wrongCharge = queryUnStrikeChargeRecord(breakDate,customerName,platformName,platformVersion,moduleName)
+        val wrongCharge = queryUnStrikeChargeRecord(breakDate,customerName,platformName,platformVersion,moduleName)
         // 2.2 修改查询出的收费记录
         // 2.2.1 计算冲正后的金额
-        var strikeChargeStartDate = wrongCharge["THIS_CHARGE_STARTTIME"].toString()
+        val strikeChargeStartDate = wrongCharge["THIS_CHARGE_STARTTIME"].toString()
         var strikeChargeDays = getDateSpace(strikeChargeStartDate, breakDate+" 00:00:00").toInt()
-        if(getMonthDay(breakDate).equals("0229") || getMonthDay(strikeChargeStartDate).equals("0229")){
-            strikeChargeDays = strikeChargeDays - 1
+        if(getMonthDay(breakDate) == "0229" || getMonthDay(strikeChargeStartDate) == "0229"){
+            strikeChargeDays -= 1
         }
-        var yearMoney = getYearMoneyByRelatedChargeBills(wrongCharge["REL_CHARGE"].toString(),strikeChargeStartDate)
-        var strikeChargeMoney = (yearMoney.toFloat()/365)*strikeChargeDays
+        val relatedChargeBillObjectId = wrongCharge["REL_CHARGE"].toString()
+        val yearMoney = getYearMoneyByRelatedChargeBills(relatedChargeBillObjectId,strikeChargeStartDate)
+        val strikeChargeMoney = (yearMoney.toFloat()/365)*strikeChargeDays
         println(strikeChargeMoney)
         // 2.2.2 计算差额冲正
-
-        // 2.2.3
-
-        // 删除错帐收费记录
-
-
+        val wrongChargeObjectId = wrongCharge["OBJECTID"].toString()
+        val relatedReceivablesSql = Sqls
+                .create("select * from $DM_RECEIVABLES where REL_CHARGE_RECORD='$wrongChargeObjectId'")
+                .setCallback(Sqls.callback.maps())
+        val listRelatedReceivables = dao.execute(relatedReceivablesSql).getList(Map::class.java)
+        var sumRelatedReceivables = 0f
+        listRelatedReceivables.forEach {
+            sumRelatedReceivables += it["MONEY"].toString().toFloat()
+        }
+        val balanceMoney = sumRelatedReceivables - strikeChargeMoney
+        println(balanceMoney)
+        // 2.2.3 修改错账收费记录
+        val chainWrongChargeRecord = org.nutz.dao.Chain.make("CHARGE_SUM",strikeChargeMoney).add("THIS_CHARGE_ENDTIME",breakDate+" 00:00:00")
+        dao.update(DM_CHARGE_RECORD,chainWrongChargeRecord,Cnd.where("OBJECTID","=",wrongChargeObjectId))
+        // 2.2.3 删除错帐收费记录
+        dao.clear(DM_CHARGE_RECORD,Cnd.where("REL_CHARGE","=",relatedChargeBillObjectId).and("THIS_CHARGE_STARTTIME",">",breakDate+" 00:00:00"))
+        // 2.2.4 生成差额冲正应收单
+        val balanceReceivablesql = Sqls.create(
+                "select * from $DM_RECEIVABLES ${Cnd
+                        .where("REL_CHARGE_RECORD","=",wrongChargeObjectId)
+                        .and("CHARGE_STARTTIME","<=",breakDate)
+                        .and("CHARGE_ENDTIME",">=",breakDate)
+                }"
+        ).setCallback(Sqls.callback.maps())
+        val listbalanceReceivable = dao.execute(balanceReceivablesql).getList(Map::class.java)
+        if(listbalanceReceivable.size==1){
+            val chainBalanceReceivable = org.nutz.dao.Chain.make("OBJECTID", "RECEIVABLES:$STRIKE_SIGN${System.currentTimeMillis()}")
+            listbalanceReceivable[0].forEach {
+                when(it.key.toString()){
+                    "CREATEDATE"         -> chainBalanceReceivable.add(it.key.toString(), getToDayDate())
+                    "CREATOR"            -> chainBalanceReceivable.add(it.key.toString(),"28caec88-1a96-45f4-99d5-6555ffbd31dd")
+                    "LAST_MODIFIED_TIME" -> chainBalanceReceivable.add(it.key.toString(), getToDayDate())
+                    "LAST_MODIFIED_NAME" -> chainBalanceReceivable.add(it.key.toString(), STRIKE_SIGN)
+                    "MONEY"              -> chainBalanceReceivable.add(it.key.toString(), "-$balanceMoney")
+                    "BUSINESS_DATE"      -> chainBalanceReceivable.add(it.key.toString(), getToDayDate())
+                    "IS_EXPORT"          -> chainBalanceReceivable.add(it.key.toString(), "YESORNO:5e2595da-59d7-49f6-a183-3b1a6c0d9faa")
+                    "OBJECTID"           -> it.value
+                    else -> chainBalanceReceivable.add(it.key.toString(),it.value)
+                }
+            }
+            dao.insert(DM_RECEIVABLES,chainBalanceReceivable)
+        }
         // 删除错帐收费单
-
-
     }
 
     // 查询迁出日期所在的收费记录
@@ -75,15 +110,17 @@ class BreakToolModule :BaseModule() {
             platformVersion:String,
             moduleName:String
     ):Map<*,*>{
-        var sql:Sql = Sqls.create(
-                "select * from $DM_CHARGE_RECORD where THIS_CHARGE_STARTTIME<='$breakDate' and "+
-                        "THIS_CHARGE_ENDTIME>='$breakDate' and PLATFORM='$platformName' and MODULE='$moduleName'"+
-                        " and VERSION='$platformVersion' and CLIENT_NAME='$customerName'"
-        )
-        sql.setCallback(Sqls.callback.maps())
-        dao.execute(sql)
-        var listWrongCharge = sql.getList(Map::class.java)
-        return listWrongCharge[0]
+        val sql:Sql = Sqls.create(
+                "select * from $DM_CHARGE_RECORD ${Cnd
+                        .where("THIS_CHARGE_STARTTIME","<=",breakDate)
+                        .and("THIS_CHARGE_ENDTIME",">=",breakDate)
+                        .and("PLATFORM","=",platformName)
+                        .and("MODULE","=",moduleName)
+                        .and("VERSION","=",platformVersion)
+                        .and("CLIENT_NAME","=",customerName)
+                }"
+        ).setCallback(Sqls.callback.maps())
+        return dao.execute(sql).getList(Map::class.java)[0]
     }
 
     // 查询符合条件的待冲应收单
@@ -94,27 +131,28 @@ class BreakToolModule :BaseModule() {
             platformVersion:String,
             moduleName:String
     ):List<Map<*,*>>{
-        var sql: Sql = Sqls.create(
-                "select * from $DM_RECEIVABLES where CHARGE_STARTTIME > '$breakDate' and CLIENT_NAME='$customerName'"+
-                        " and MODULE_NAME='$moduleName'"+ " and PLATFORM_NAME='$platformName' "+
-                        "and VERSION_NAME='$platformVersion' and LAST_MODIFIED_NAME <> '$STRIKE_SIGN'"
-        )
-        sql.setCallback(Sqls.callback.maps())
-        dao.execute(sql)
-        return sql.getList(Map::class.java)
+        val sql: Sql = Sqls.create("select * from $DM_RECEIVABLES ${Cnd
+                .where("CHARGE_STARTTIME",">",breakDate)
+                .and("CLIENT_NAME","=",customerName)
+                .and("MODULE_NAME","=",moduleName)
+                .and("PLATFORM_NAME","=",platformName)
+                .and("VERSION_NAME","=",platformVersion)
+                .and("LAST_MODIFIED_NAME","<>",STRIKE_SIGN)}"
+        ).setCallback(Sqls.callback.maps())
+        return dao.execute(sql).getList(Map::class.java)
     }
 
     // 生成红冲应收单
     private fun generateStrikeReceivables(listStrikeReceivables:List<Map<*,*>>) {
-        var cndWhereUnReceivablesStr = mutableListOf<String>()
+        val cndWhereUnReceivablesStr = mutableListOf<String>()
         listStrikeReceivables.forEach {
-            var chainStrikeReceivables = org.nutz.dao.Chain.make("OBJECTID", "RECEIVABLES:$STRIKE_SIGN${System.currentTimeMillis()}")
+            val chainStrikeReceivables = org.nutz.dao.Chain.make("OBJECTID", "RECEIVABLES:$STRIKE_SIGN${System.currentTimeMillis()}")
             it.forEach {
                 when(it.key.toString()){
                     "CREATEDATE"         -> chainStrikeReceivables.add(it.key.toString(), getToDayDate())
                     "CREATOR"            -> chainStrikeReceivables.add(it.key.toString(),"28caec88-1a96-45f4-99d5-6555ffbd31dd")
                     "LAST_MODIFIED_TIME" -> chainStrikeReceivables.add(it.key.toString(), getToDayDate())
-                    "LAST_MODIFIED_NAME" -> chainStrikeReceivables.add(it.key.toString(), "$STRIKE_SIGN")
+                    "LAST_MODIFIED_NAME" -> chainStrikeReceivables.add(it.key.toString(), STRIKE_SIGN)
                     "MONEY"              -> chainStrikeReceivables.add(it.key.toString(), "-${it.value}")
                     "BUSINESS_DATE"      -> chainStrikeReceivables.add(it.key.toString(), getToDayDate())
                     "IS_EXPORT"          -> chainStrikeReceivables.add(it.key.toString(), "YESORNO:5e2595da-59d7-49f6-a183-3b1a6c0d9faa")
@@ -126,7 +164,7 @@ class BreakToolModule :BaseModule() {
             cndWhereUnReceivablesStr.add("'${it["OBJECTID"]}'")
         }
         dao.update(DM_RECEIVABLES,
-                org.nutz.dao.Chain.make("LAST_MODIFIED_NAME","$STRIKE_SIGN"),
+                org.nutz.dao.Chain.make("LAST_MODIFIED_NAME", STRIKE_SIGN),
                 Cnd.where("OBJECTID","in",cndWhereUnReceivablesStr.joinToString(",")))
     }
 
@@ -162,14 +200,14 @@ class BreakToolModule :BaseModule() {
 
     private fun getYearMoneyByRelatedChargeBills(
             chargeBillsObjectId:String,chargeRecordStartDate:String):String{
-        var sql:Sql = Sqls.create("select * from $DM_CHARGE_Bills where objectid='$chargeBillsObjectId'")
-        sql.setCallback(Sqls.callback.maps())
-        var strikeChargeBill = dao.execute(sql).getList(Map::class.java)[0]
-        var strikeChargeBillStartDate = strikeChargeBill["TOLL_STARTTIME"].toString()
+        val sql:Sql = Sqls.create("select * from $DM_CHARGE_Bills where objectid='$chargeBillsObjectId'")
+                .setCallback(Sqls.callback.maps())
+        val strikeChargeBill = dao.execute(sql).getList(Map::class.java)[0]
+        val strikeChargeBillStartDate = strikeChargeBill["TOLL_STARTTIME"].toString()
 
-        var firstYearEndStamp = getDateByYearStamp(strikeChargeBillStartDate,1,COMMON_DATE_FORMAT)
-        var secondYearEndStamp = getDateByYearStamp(strikeChargeBillStartDate,2,COMMON_DATE_FORMAT)
-        var chargeRecordStartDateStamp = date2TimeStamp(chargeRecordStartDate,COMMON_DATE_FORMAT)
+        val firstYearEndStamp = getDateByYearStamp(strikeChargeBillStartDate,1,COMMON_DATE_FORMAT)
+        val secondYearEndStamp = getDateByYearStamp(strikeChargeBillStartDate,2,COMMON_DATE_FORMAT)
+        val chargeRecordStartDateStamp = date2TimeStamp(chargeRecordStartDate,COMMON_DATE_FORMAT)
 
         return when{
             chargeRecordStartDateStamp<=firstYearEndStamp -> strikeChargeBill["FIRST_REAL_MONEY"].toString()
@@ -177,4 +215,5 @@ class BreakToolModule :BaseModule() {
             else -> strikeChargeBill["THIRD_REAL_MONEY"].toString()
         }
     }
+
 }
