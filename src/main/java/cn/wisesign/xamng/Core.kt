@@ -13,12 +13,24 @@ import org.apache.velocity.VelocityContext
 import java.io.StringWriter
 
 // 执行测试案例
-fun excuteGroovyCase(sourceCase: CaseDetail,slave:String,browser:String) {
+fun excuteGroovyCase(sourceCase: CaseDetail,slave:String,browser:String):String {
+    var result = ""
+    if(!validateCase(sourceCase)){
+        result="error:用例步骤有误，无法执行！"
+        return result
+    }
     val groovyClass = parseClass(sourceCase,slave,browser)
     val tng = TestNG()
     tng.setUseDefaultListeners(false)
     tng.setTestClasses(arrayOf(groovyClass.newInstance().javaClass))
-    tng.run()
+    try{
+        tng.run()
+        result = "success:${sourceCase.caseId}"
+    }catch (e:Exception){
+        result = "error:$e"
+    }finally {
+        return result
+    }
 }
 
 // 将测试案例对象转化可执行的groovy脚本类
@@ -39,6 +51,10 @@ fun parseClass(sourceCase: CaseDetail,slave:String,browser:String): Class<Any> {
     template.merge(ctx,strwriter)
     val groovyLoader = GroovyClassLoader(Thread.currentThread().contextClassLoader)
     return groovyLoader.parseClass(strwriter.toString())
+}
+
+fun validateCase(sourceCase: CaseDetail):Boolean{
+    return true
 }
 
 class SeleniumHub {

@@ -2,52 +2,56 @@ package cn.wisesign.xamng.pojo;
 
 
 import java.util.Date;
+import java.util.List;
 
 import org.nutz.dao.entity.annotation.*;
 
 @Table("xamng_case")
 public class UiCase {
-	@Id private int id;
-	@Name @Column private String name;
-	@Column("belongProject") private String belongProject;
-	@Column("script") @ColDefine(customType="LONGTEXT", type=ColType.VARCHAR) private String script;
-	@Column("createdate") private Date createdate;
-	@Column("author") private String author;
-	public int getId() {
-		return id;
+
+	@Id
+    private int caseId;
+
+	@Column
+    private String caseDetail;
+
+	@Many(field="caseId")
+    private List<UiStep> steps;
+
+	@Column("createdate")
+    private Date createdate;
+
+	public int getCaseId() {
+		return caseId;
 	}
-	public void setId(int id) {
-		this.id = id;
+
+	public void setCaseId(int caseId) {
+		this.caseId = caseId;
 	}
-	public String getName() {
-		return name;
+
+	public String getCaseDetail() {
+		return caseDetail;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setCaseDetail(String caseDetail) {
+		this.caseDetail = caseDetail;
 	}
-	public String getBelongProject() {
-		return belongProject;
+
+	public List<UiStep> getSteps() {
+		return steps;
 	}
-	public void setBelongProject(String belongProject) {
-		this.belongProject = belongProject;
+
+	public void setSteps(List<UiStep> steps) {
+		this.steps = steps;
 	}
-	public String getScript() {
-		return script;
-	}
-	public void setScript(String script) {
-		this.script = script;
-	}
+
 	public Date getCreatedate() {
 		return createdate;
 	}
+
 	public void setCreatedate(Date createdate) {
 		this.createdate = createdate;
 	}
-	public String getAuthor() {
-		return author;
-	}
-	public void setAuthor(String author) {
-		this.author = author;
-	}
+
 
 }

@@ -6,7 +6,9 @@ import org.nutz.dao.entity.annotation.Table;
 
 @Table("xamng_htmlobject")
 public class HtmlObject {
+
     @Id private int id;
+
     @Column private String selector;
 
     public int getId() {

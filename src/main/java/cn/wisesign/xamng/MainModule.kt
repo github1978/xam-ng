@@ -15,14 +15,14 @@ import org.nutz.mvc.ioc.provider.ComboIocProvider
 class MainModule
 
 
-class MainSetup(): Setup {
+class MainSetup : Setup {
 
     companion object{
         var DAO_PACKAGE = "cn.wisesign.xamng"
     }
 
     override fun init(conf: NutConfig) {
-        var dao: Dao = conf.ioc.get(Dao::class.java)
+        val dao: Dao = conf.ioc.get(Dao::class.java)
         Daos.createTablesInPackage(dao, DAO_PACKAGE, false)
         SeleniumHub.boot()
     }

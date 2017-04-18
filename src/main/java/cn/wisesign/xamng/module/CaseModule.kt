@@ -7,6 +7,7 @@ import cn.wisesign.xamng.excuteGroovyCase
 import org.nutz.ioc.loader.annotation.IocBean
 import org.nutz.lang.util.NutMap
 import cn.wisesign.xamng.pojo.UiCase
+import cn.wisesign.xamng.pojo.UiStep
 import org.nutz.dao.QueryResult
 import org.nutz.mvc.adaptor.JsonAdaptor
 import org.nutz.mvc.annotation.*
@@ -18,44 +19,44 @@ import org.nutz.mvc.annotation.*
 @Fail("http:500")
 class CaseModule : BaseModule() {
     
-    @At fun query():NutMap {
+    @At fun query() {
+//        try {
+//            val cases:QueryResult = queryAny(UiCase().javaClass,null,null,"")
+//            when(cases.list.size){
+//                0 -> return ajaxOk("no data")
+//                else -> {
+//                    val case = cases.list[0] as UiCase
+//                    return ajaxOk(NutMap().setv("caseScript", case.script))
+//                }
+//            }
+//        }catch (e:Exception){
+//            e.printStackTrace()
+//            return ajaxFail(e.message)
+//        }
+    }
+
+    /*
+      保存ui用例，数据格式如下：
+       {
+            caseId:"",
+            steps:[
+                {detail:"",element:"",operate:"",target:""},
+                ...
+            ]
+       }
+       保存成功，返回用例id
+       保存失败，返回失败原因
+     */
+    @At
+    @AdaptBy(type= JsonAdaptor::class)
+    fun save(uicase:UiCase):NutMap{
         try {
-            val cases:QueryResult = queryAny(UiCase().javaClass,null,null,"")
-            when(cases.list.size){
-                0 -> return ajaxOk("no data")
-                else -> {
-                    val case = cases.list[0] as UiCase
-                    return ajaxOk(NutMap().setv("caseScript", case.script))
-                }
-            }
-        }catch (e:Exception){
-            e.printStackTrace()
+            return ajaxOk(dao.insertWith(uicase, "steps").caseId)
+        }catch(e:Exception){
             return ajaxFail(e.message)
         }
     }
 
-    @At
-    @AdaptBy(type= JsonAdaptor::class)
-    fun save(
-            @Param("caseId") caseId:String,
-            @Param("step") step:CaseStep
-    ):NutMap{
-        print(caseId)
-        print(step)
-        return ajaxOk(NutMap())
-    }
-
-    @At fun delete():NutMap{
-        return ajaxOk(NutMap())
-    }
-
-    @At fun saveObject(@Param("productId") productId:String):NutMap{
-        return ajaxOk(NutMap())
-    }
-
-    @At fun queryObject(@Param("productId") productId:String):NutMap{
-        return ajaxOk(NutMap())
-    }
 
     @At fun excute(
             @Param("slave") slave:String,
@@ -63,23 +64,17 @@ class CaseModule : BaseModule() {
     ):NutMap
     {
         val uicase = CaseDetail(1,"hehe",1,"", listOf())
-        excuteGroovyCase(uicase,slave,browser)
-        return ajaxOk("a")
+        val result = excuteGroovyCase(uicase,slave,browser)
+        if(result.startsWith("success")){
+            return ajaxOk(result)
+        }else{
+            return ajaxFail(result)
+        }
     }
 
-    @At fun stopTestServer():NutMap{
-        SeleniumHub.stop()
-        return ajaxOk(NutMap())
-    }
-
-    @At fun startTestServer():NutMap{
-        SeleniumHub.start()
-        return ajaxOk(NutMap())
-    }
 
     @At fun getSlaves():NutMap{
-        var seleniumNodes = SeleniumHub.getSeleniumNodes()
-        return ajaxOk(seleniumNodes)
+        return ajaxOk(SeleniumHub.getSeleniumNodes())
     }
 
 }

@@ -8,9 +8,35 @@
 
         $scope.getSlaves = getSlaves;
         $scope.excuteCase = excuteCase;
+        $scope.saveCase = saveCase;
         $scope.addStep = addStep;
         $scope.selectedBrowser = {};
         $scope.selectedSlave = {};
+        $scope.selectedOperation = {};
+        $scope.operates = [
+            {value:"click"},
+            {value:"select"},
+            {value:"type"},
+            {value:"go"}
+        ];
+
+        function saveCase(){
+            $http.post(
+                "/xamng/case/save",
+                {
+                    caseId:'121212',
+                    caseDetail:'hehe',
+                    steps:[
+                        {detail:'hehe',element:'hehe',operate:'hehe',target:'hehe'},
+                        {detail:'hehe1',element:'hehe1',operate:'hehe1',target:'hehe1'}
+                    ]
+                }
+            ).success(
+                function(data, status, headers, config) {
+                    console.log(data)
+                }
+            );
+        }
 
         function getSlaves(){
             $http.get("/xamng/case/getSlaves").then(
@@ -41,14 +67,25 @@
             $scope.steps.push($($('#addStepPanel').find('input')[0]).val());
         };
 
-        toDoListController($scope,baConfig);
+        stepListController($scope,baConfig);
 
       }
 
-      function toDoListController(toListScope,vbaconfig){
-        toListScope.transparent = vbaconfig.theme.blur;
+      function stepListController(stepListScope,vbaconfig){
+        stepListScope.transparent = vbaconfig.theme.blur;
         var dashboardColors = vbaconfig.colors.dashboard;
         var colors = [];
+
+        stepListScope.sortableOptions = {
+            update: function(e, ui) {
+                var resArr = [];
+                for (var i = 0; i < stepListScope.todoList.length; i++) {
+                    resArr.push(stepListScope.todoList[i].i);
+                }
+                console.log(stepListScope.todoList)
+            }
+        };
+
         for (var key in dashboardColors) {
           colors.push(dashboardColors[key]);
         }
@@ -58,30 +95,28 @@
           return colors[i];
         }
 
-        toListScope.todoList = [
-          { text: 'Check me out' },
-          { text: 'Lorem ipsum dolor sit amet, possit denique oportere at his, etiam corpora deseruisse te pro' },
-          { text: 'Ex has semper alterum, expetenda dignissim' },
-          { text: 'Vim an eius ocurreret abhorreant, id nam aeque persius ornatus.' },
-          { text: 'Simul erroribus ad usu' },
-          { text: 'Ei cum solet appareat, ex est graeci mediocritatem' },
-          { text: 'Get in touch with akveo team' },
-          { text: 'Write email to business cat' },
-          { text: 'Have fun with blur admin' },
-          { text: 'What do you think?' },
-        ];
+        stepListScope.todoList = [];
 
-        toListScope.todoList.forEach(function(item) {
+        stepListScope.todoList.forEach(function(item) {
           item.color = getRandomColor();
         });
 
-        toListScope.addToDoItem = function (event, clickPlus) {
-          if (clickPlus || event.which === 13) {
-            toListScope.todoList.unshift({
-              text: toListScope.vm.newTodoText,
+        stepListScope.addToDoItem = function (event, clickPlus) {
+          if ((clickPlus || event.which === 13)
+          && (stepListScope.vm.newTodoText!='' && stepListScope.vm.newTodoText!=undefined)) {
+            stepListScope.todoList.push({
+              step: {
+                detail:stepListScope.vm.detail,
+                element:stepListScope.vm.newTodoText,
+                operate:stepListScope.vm.operate.value,
+                target:stepListScope.vm.target
+              },
               color: getRandomColor(),
             });
-            toListScope.vm.newTodoText = '';
+            stepListScope.vm.newTodoText = '';
+            stepListScope.vm.target = '';
+            stepListScope.vm.operate = '';
+            stepListScope.vm.detail = '';
           }
         };
       }
