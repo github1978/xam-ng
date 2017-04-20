@@ -2,12 +2,11 @@ package cn.wisesign.xamng.module
 
 import cn.wisesign.xamng.SeleniumHub
 import cn.wisesign.xamng.dto.CaseDetail
-import cn.wisesign.xamng.dto.CaseStep
 import cn.wisesign.xamng.excuteGroovyCase
 import org.nutz.ioc.loader.annotation.IocBean
 import org.nutz.lang.util.NutMap
 import cn.wisesign.xamng.pojo.UiCase
-import cn.wisesign.xamng.pojo.UiStep
+import cn.wisesign.xamng.service.CaseService
 import org.nutz.dao.QueryResult
 import org.nutz.mvc.adaptor.JsonAdaptor
 import org.nutz.mvc.annotation.*
@@ -19,20 +18,18 @@ import org.nutz.mvc.annotation.*
 @Fail("http:500")
 class CaseModule : BaseModule() {
     
-    @At fun query() {
-//        try {
-//            val cases:QueryResult = queryAny(UiCase().javaClass,null,null,"")
-//            when(cases.list.size){
-//                0 -> return ajaxOk("no data")
-//                else -> {
-//                    val case = cases.list[0] as UiCase
-//                    return ajaxOk(NutMap().setv("caseScript", case.script))
-//                }
-//            }
-//        }catch (e:Exception){
-//            e.printStackTrace()
-//            return ajaxFail(e.message)
-//        }
+    @At
+    fun queryCases():NutMap {
+        try {
+            val cases = CaseService().queryCaseList()
+            when(cases.size){
+                0 -> return ajaxOk("no data")
+                else -> return ajaxOk(cases)
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+            return ajaxFail(e.message)
+        }
     }
 
     /*
