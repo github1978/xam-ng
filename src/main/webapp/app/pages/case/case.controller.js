@@ -1,7 +1,7 @@
 (function(){
 
     angular
-        .module('BlurAdmin.pages.case.addcase',[])
+        .module('BlurAdmin.pages.case.list',[])
         .controller('CaseController',CaseController);
 
     function CaseController($scope,$http){
@@ -16,7 +16,6 @@
                 }
             );
         };
-        $scope.queryCases();
     }
 
 })();

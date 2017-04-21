@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.case', ['BlurAdmin.pages.case.addcase'])
+  angular.module('BlurAdmin.pages.case', ['BlurAdmin.pages.case.list'])
          .config(routeConfig);
 
   /** @ngInject */
@@ -15,6 +15,7 @@
           url: '/case',
           templateUrl: 'app/pages/case/case.html',
           title: '用例',
+          controller:'CaseController',
           sidebarMeta: {
             icon: 'ion-stats-bars',
             order: 990,

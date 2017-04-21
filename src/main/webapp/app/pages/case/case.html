@@ -1,4 +1,4 @@
-<div class="widgets" ng-controller="CaseController">
+<div class="widgets">
     <div class="horizontal-scroll">
         <div class="form-group select-page-size-wrap ">
             <label>Rows on page
@@ -7,10 +7,10 @@
                 </select>
             </label>
         </div>
-        <table class="table" st-table="caseData">
+        <table class="table" st-pipe="queryCases" st-table="caseData">
             <thead>
             <tr class="sortable ">
-                <th class="table-id" st-sort="caseId" st-sort-default="true">#</th>
+                <th class="table-id">#</th>
                 <th st-sort="caseDetail">用例描述</th>
             </tr>
             </thead>
