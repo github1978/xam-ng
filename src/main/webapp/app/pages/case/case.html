@@ -6,8 +6,9 @@
                         ng-model="caseDataPages" ng-options="i for i in [5,10,15,20,25]">
                 </select>
             </label>
+            <button ng-click="queryCases()">aaa</button>
         </div>
-        <table class="table" st-pipe="queryCases" st-table="caseData">
+        <table class="table" st-pipe="queryCases" st-table="displayCaseData" st-safe-src="caseData">
             <thead>
             <tr class="sortable ">
                 <th class="table-id">#</th>
@@ -15,7 +16,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="item in caseData">
+            <tr st-select-row="row" st-select-mode="multiple" ng-repeat="item in displayCaseData">
                 <td class="table-id">{{item.caseId}}</td>
                 <td>{{item.caseDetail}}</td>
             </tr>

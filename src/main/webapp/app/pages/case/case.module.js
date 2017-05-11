@@ -5,7 +5,7 @@
 (function () {
   'use strict';
 
-  angular.module('BlurAdmin.pages.case', ['BlurAdmin.pages.case.list'])
+  angular.module('BlurAdmin.pages.case', ['BlurAdmin.pages.case.ctrl','BlurAdmin.pages.case.services'])
          .config(routeConfig);
 
   /** @ngInject */
@@ -15,11 +15,20 @@
           url: '/case',
           templateUrl: 'app/pages/case/case.html',
           title: '用例',
-          controller:'CaseController',
           sidebarMeta: {
             icon: 'ion-stats-bars',
             order: 990,
           },
+          controller:'CaseController',
+          resolve:{
+            initData:function($q,caseServices){
+                var deferred = $q.defer();
+                caseServices.getCaseList().then(function(res){
+                    deferred.resolve(res);
+                });
+                return deferred.promise;
+            }
+          }
         });
   }
 

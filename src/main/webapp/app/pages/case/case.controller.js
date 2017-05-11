@@ -1,20 +1,16 @@
 (function(){
 
     angular
-        .module('BlurAdmin.pages.case.list',[])
-        .controller('CaseController',CaseController);
+        .module('BlurAdmin.pages.case.ctrl',[])
+        .controller('CaseController',['$scope','caseServices','initData',CaseController]);
 
-    function CaseController($scope,$http){
+    function CaseController($scope,caseServices,initData){
         $scope.caseData = [];
         $scope.caseDataPages = 10;
         $scope.queryCases = function(){
-            $http.get(
-                '/xamng/case/queryCases'
-            ).then(
-                function(response){
-                    $scope.caseData = response.data.results;
-                }
-            );
+            caseServices.getCaseList().then(function(res){
+                $scope.caseData = res;
+            });
         };
     }
 
