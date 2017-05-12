@@ -18,11 +18,10 @@ import org.nutz.mvc.annotation.*
 @Fail("http:500")
 class CaseModule : BaseModule() {
     
-    @At
-    fun queryCases():NutMap {
+    @At fun queryCases():NutMap {
         try {
-            val cases = CaseService().queryCaseList()
-            when(cases.size){
+            val cases = CaseService().queryCaseList(null,null)
+            when(cases.list.size){
                 0 -> return ajaxOk("no data")
                 else -> return ajaxOk(cases)
             }

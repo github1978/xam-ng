@@ -1,0 +1,45 @@
+<div ba-panel ba-panel-title="添加用例" ba-panel-class="with-scroll">
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default" ng-click="excuteCase()">运行</button>
+        <button type="button" class="btn btn-default">停止</button>
+        <button type="button" class="btn btn-default" ng-click="saveCase()">保存用例</button>
+        <button type="button" class="btn btn-default">删除用例</button>
+        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#globalModal" data-backdrop="static">添加步骤</button>
+    </div>
+    <select class="wiseSelect browserType"
+            ng-model="selectedBrowser.value"
+            ng-init="browsers=['ie','chrome','firefox']"
+            ng-options="browser for browser in browsers"></select>
+    <select class="wiseSelect slave" ng-model="selectedSlave.value" ng-options="slave.id for slave in slaves"></select>
+    <button ng-click="getSlaves()">刷新可用节点</button>
+
+    <div class="task-todo-container" ng-class="{'transparent': transparent}">
+        <div class="case-input-area">
+            <input type="text" ng-model="vm.detail" value="" class="case-input form-control" placeholder="步骤描述" ng-keyup="addToDoItem($event)" />
+            <input type="text" ng-model="vm.newTodoText" value="" class="case-input form-control task-todo" placeholder="元素定位" ng-keyup="addToDoItem($event)" />
+            <select class="case-input form-control" ng-model="vm.operate" ng-options="operate.value for operate in operates"></select>
+            <input type="text" ng-model="vm.target" value="" class="case-input form-control" ng-keyup="addToDoItem($event)" placeholder="操作值"/>
+        </div>
+        <i ng-click="addToDoItem('',true)" class="add-item-icon ion-plus-round"></i>
+        <div class="box-shadow-border"></div>
+        <ul class="todo-list" ui-sortable="sortableOptions" ng-model="todoList">
+            <li ng-repeat="item in todoList" ng-if="!item.deleted" ng-init="activeItem=false"
+                ng-class="{checked: isChecked, active: activeItem}"
+                ng-mouseenter="activeItem=true" ng-mouseleave="activeItem=false">
+                <div class="blur-container"><div class="blur-box"></div></div>
+                <i class="mark" style="background-color: {{::item.color}}"></i>
+                <label class="todo-checkbox custom-checkbox custom-input-success">
+                    <input type="checkbox" ng-model="isChecked">
+                    <div class="cut-with-dots">
+                        <span>{{ item.step.detail }}</span>
+                        <span class="badge">{{ item.step.element }}</span>
+                        <span class="badge">{{ item.step.operate }}</span>
+                        <span class="badge">{{ item.step.target }}</span>
+                    </div>
+                </label>
+                <i class="remove-todo ion-ios-close-empty" ng-click="item.deleted = true"></i>
+            </li>
+        </ul>
+    </div>
+
+</div>

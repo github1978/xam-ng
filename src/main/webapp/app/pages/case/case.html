@@ -1,18 +1,22 @@
 <div class="widgets">
-    <div class="horizontal-scroll">
-        <div class="form-group select-page-size-wrap ">
-            <label>Rows on page
-                <select class="form-control selectpicker show-tick" title="Rows on page" selectpicker
-                        ng-model="caseDataPages" ng-options="i for i in [5,10,15,20,25]">
-                </select>
-            </label>
-            <button ng-click="queryCases()">aaa</button>
-        </div>
-        <table class="table" st-pipe="queryCases" st-table="displayCaseData" st-safe-src="caseData">
+    <div class="horizontal-scroll"
+         ba-panel
+         ba-panel-title="用例列表"
+         ba-panel-class="with-scroll">
+        <ul class="btn-list clearfix">
+            <li><button type="button" class="btn btn-primary btn-with-icon" data-toggle="modal" ng-click="open()"><i class="ion-android-download"></i>新增</button></li>
+            <li><button type="button" class="btn btn-default btn-with-icon"><i class="ion-stats-bars"></i>删除</button></li>
+            <li><button type="button" class="btn btn-success btn-with-icon" ng-click="queryCases()"><i class="ion-android-checkmark-circle"></i>刷新</button></li>
+        </ul>
+        <table class="table" st-table="displayCaseData" st-safe-src="caseData">
             <thead>
             <tr class="sortable ">
-                <th class="table-id">#</th>
+                <th class="table-id">用例ID</th>
                 <th st-sort="caseDetail">用例描述</th>
+            </tr>
+            <tr>
+                <th><input st-search="caseId"/></th>
+                <th><input st-search="caseDetail"/></th>
             </tr>
             </thead>
             <tbody>
@@ -24,7 +28,7 @@
             <tfoot>
             <tr>
                 <td colspan="6" class="text-center">
-                    <div st-pagination="" st-items-by-page="caseDataPages" st-displayed-pages="5"></div>
+                    <div st-pagination="" st-items-by-page="pageSize" st-displayed-pages="5"></div>
                 </td>
             </tr>
             </tfoot>
