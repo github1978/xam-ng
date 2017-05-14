@@ -18,6 +18,7 @@
             animation: true,
             templateUrl: 'app/pages/case/addCase.html',
             controller:'addCaseController',
+            size:'lg',
             resolve: {
               items: function () {
                 return $scope.items;

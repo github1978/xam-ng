@@ -1,4 +1,4 @@
-<div ba-panel ba-panel-title="添加用例" ba-panel-class="with-scroll">
+<div id="rightFullHeightModal" ba-panel ba-panel-title="添加用例" ba-panel-class="with-scroll">
     <div class="btn-group" role="group" aria-label="...">
         <button type="button" class="btn btn-default" ng-click="excuteCase()">运行</button>
         <button type="button" class="btn btn-default">停止</button>
@@ -43,3 +43,8 @@
     </div>
 
 </div>
+<script>
+(function(){
+    $($('#rightFullHeightModal').find('.panel')[0]).css('height','300px');
+})();
+</script>
